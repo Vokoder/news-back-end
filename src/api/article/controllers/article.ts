@@ -13,9 +13,9 @@ export interface PaginationQuery {
 }
 
 export interface Category {
-  id?: number,
-  name?: string,
-  slug?: string,
+  id?: number;
+  name?: string;
+  slug?: string;
 }
 
 export default factories.createCoreController('api::article.article', ({ strapi }) => ({
@@ -30,10 +30,12 @@ export default factories.createCoreController('api::article.article', ({ strapi 
     const filters = (raw.filters as Record<string, unknown>) ?? {};
 
     const sortParam = raw.sort ? (Array.isArray(raw.sort) ? raw.sort.map(String) : [String(raw.sort)]) : undefined;
-    const order = sortParam ? sortParam.map(s => {
-      const [field, dir] = String(s).split(':');
-      return { [field]: dir === 'desc' ? 'desc' : 'asc' };
-    }) : undefined;
+    const order = sortParam
+      ? sortParam.map((s) => {
+          const [field, dir] = String(s).split(':');
+          return { [field]: dir === 'desc' ? 'desc' : 'asc' };
+        })
+      : undefined;
 
     const populate = {
       author: true,
@@ -54,10 +56,10 @@ export default factories.createCoreController('api::article.article', ({ strapi 
     const safeArticles = (articles || []).map((a: any) => {
       const author = a?.author
         ? {
-          id: a.author.id,
-          username: a.author.username,
-          email: a.author.email,
-        }
+            id: a.author.id,
+            username: a.author.username,
+            email: a.author.email,
+          }
         : null;
 
       return {
@@ -190,5 +192,5 @@ export default factories.createCoreController('api::article.article', ({ strapi 
     }
     strapi.log.info(`Article ${id} deleted`);
     return await { data: deleted };
-  }
+  },
 }));
